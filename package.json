@@ -1,29 +1,29 @@
 {
-  "name": "fastboot-s3-downloader",
-  "version": "0.2.0",
-  "description": "A FastBoot App Server downloader for AWS S3",
+  "name": "fastboot-gitlab-downloader",
+  "version": "0.0.0",
+  "description": "A FastBoot App Server downloader for GitLab build artifacts",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tomdale/fastboot-s3-downloader.git"
+    "url": "git+https://github.com/buschtoens/fastboot-gitlab-downloader.git"
   },
   "keywords": [
     "ember",
     "fastboot",
     "downloader",
-    "s3"
+    "gitlab"
   ],
-  "author": "Tom Dale <tom@tomdale.net>",
+  "author": "Jan Buschtöns <buschtoens@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tomdale/fastboot-s3-downloader/issues"
+    "url": "https://github.com/buschtoens/fastboot-gitlab-downloader/issues"
   },
-  "homepage": "https://github.com/tomdale/fastboot-s3-downloader#readme",
+  "homepage": "https://github.com/buschtoens/fastboot-gitlab-downloader#readme",
   "dependencies": {
-    "aws-sdk": "^2.3.4",
-    "fs-promise": "^0.5.0"
+    "fs-promise": "^0.5.0",
+    "request-promise": "^3.0.0",
   }
 }

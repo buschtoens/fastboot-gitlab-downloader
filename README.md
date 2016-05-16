@@ -1,17 +1,39 @@
-## FastBoot S3 Downloader
+## FastBoot GitLab Downloader
 
-This downloader for the [FastBoot App Server][app-server] works with AWS
-S3 to download and unzip the latest version of your deployed
+[![Latest NPM release][npm-badge]][npm-badge-url]
+[![Dependency Status][dependency-badge]][dependency-badge-url]
+[![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![Code Climate][codeclimate-badge]][codeclimate-badge-url]
+
+[npm-badge]: https://img.shields.io/npm/v/fastboot-gitlab-downloader.svg
+[npm-badge-url]: https://www.npmjs.com/package/fastboot-gitlab-downloader
+[dependency-badge]: https://img.shields.io/david/buschtoens/fastboot-gitlab-downloader.svg
+[dependency-badge-url]: https://david-dm.org/buschtoens/fastboot-gitlab-downloader
+[travis-badge]: https://img.shields.io/travis/buschtoens/fastboot-gitlab-downloader/master.svg?label=TravisCI
+[travis-badge-url]: https://travis-ci.org/buschtoens/fastboot-gitlab-downloader
+[codeclimate-badge]: https://img.shields.io/codeclimate/github/buschtoens/fastboot-gitlab-downloader.svg
+[codeclimate-badge-url]: https://codeclimate.com/github/buschtoens/fastboot-gitlab-downloader
+
+This downloader for the [FastBoot App Server][app-server] works with GitLab
+Builds to download and unzip the latest build artifacts of your deployed
 application.
 
 [app-server]: https://github.com/ember-fastboot/fastboot-app-server
 
-To use the downloader, configure it with an S3 bucket and key:
+To use the downloader, configure it with your GitLab API token and your repo:
 
 ```js
-let downloader = new S3Downloader({
-  bucket: S3_BUCKET,
-  key: S3_KEY
+const FastBootAppServer = require('fastboot-app-server');
+const GitLabDownloader  = require('fastboot-gitlab-downloader');
+
+let notifier = new GitLabDownloader({
+  url:   'http://gitlab.example.com',
+  token: '0123456789abcdefghij'
+
+  project: 'buschtoens/fastboot-test-app', // or numeric project id
+  ref:     'master'                        // optional, defaults to 'master'
+
+  path: 'dist' // optional path of the `dist` directory, defaults to 'dist'
 });
 
 let server = new FastBootAppServer({
@@ -19,24 +41,12 @@ let server = new FastBootAppServer({
 });
 ```
 
-When the downloader runs, it will download the file at the specified
-bucket and key. That file should be a JSON file that points at the
-_real_ application, and looks like this:
-
-```json
-{
-  "bucket": "S3_BUCKET",
-  "key": "path/to/dist.zip"
-}
-```
-
-Once downloaded, this file is parsed to find the location of the actual
-app bundle, which should be a zip file somewhere else on S3.
-
-Why this layer of indirection? By configuring the app server to look in
-a static location on S3, you don't need to propagate config changes to
-all of your app servers when you deploy a new version. Instead, they can
-just grab a fixed file to determine the current version.
+When the downloader runs, it will download the zip archive for the most recent
+successful build for the specified project and ref.
 
 If you like this, you may also be interested in the companion
-[fastboot-s3-notifier](https://github.com/tomdale/fastboot-s3-notifier).
+[fastboot-gitlab-notifier](https://github.com/buschtoens/fastboot-gitlab-notifier).
+
+You might also like [fastboot-gitlab-app-server](https://github.com/buschtoens/fastboot-gitlab-app-server),
+a pre-made and optionally dockerized FastBoot App Server that uses the GitLab
+notifier and downloader.
